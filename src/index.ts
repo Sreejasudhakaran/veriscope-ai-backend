@@ -36,7 +36,7 @@ app.use(helmet())
 app.use(compression())
 
 // CORS setup
-const corsEnv = process.env.CORS_ORIGIN || 'http://localhost:3000'
+const corsEnv = process.env.CORS_ORIGIN || 'https://veriscope-ai-frontend.onrender.com'
 const corsOrigins = corsEnv.split(',').map(s => s.trim())
 app.use(
   cors({
