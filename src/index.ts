@@ -168,7 +168,7 @@ const startServer = () => {
       }
 
       try {
-        const localResp = await axios.get(`http://127.0.0.1:${PORT}/health`, { timeout: 2000 })
+        const localResp = await axios.get(`http://localhost:${PORT}/health`, { timeout: 2000 })
         console.log('✅ Self-check /health response:', localResp.data)
       } catch (err: any) {
         console.error('❌ Self-check failed (cannot reach local /health):', err.message)
