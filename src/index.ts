@@ -70,7 +70,8 @@ if (fs.existsSync(envLocalPath)) {
 }
 
 const app = express()
-const PORT = process.env.PORT || 5000
+// Ensure PORT is a number (process.env values are strings)
+const PORT = Number(process.env.PORT) || 5000
 
 // Security middleware
 app.use(helmet())
@@ -114,6 +115,11 @@ app.get('/health', (req, res) => {
   })
 })
 
+// Root endpoint (some hosting platforms probe `/` for readiness)
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'Product Transparency API is running' })
+})
+
 // API routes
 app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
@@ -140,7 +146,8 @@ const connectDB = async () => {
 const startServer = async () => {
   try {
     await connectDB()
-    app.listen(PORT, () => {
+    // Bind to 0.0.0.0 explicitly so some container hosts can reach the server
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 Server running on port ${PORT}`)
       console.log(`📊 Environment: ${process.env.NODE_ENV}`)
       console.log(`🔗 Health check: http://localhost:${PORT}/health`)
